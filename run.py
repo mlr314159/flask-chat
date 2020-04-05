@@ -11,7 +11,7 @@ messages = []
 def add_message(username, message):
     """Add message to array of messages"""
     now = datetime.now().strftime("%H:%M:%S")
-    messages.append("timestamp": now, "from": username, "message": message)
+    messages.append({"timestamp": now, "from": username, "message": message})
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -21,7 +21,7 @@ def index():
         session["username"] = request.form["username"]
 
     if "username" in session:
-        return redirect(url_for("user", username-session["username"]))
+        return redirect(url_for("user", username=session["username"]))
     
     return render_template("index.html")
 
@@ -34,17 +34,9 @@ def user(username):
         username = session["username"]
         message  = request.form["message"]
         add_message(username, message)
-        return redirect(url_for("user", username-session["username"]))
+        return redirect(url_for("user", username=session["username"]))
 
     return render_template("chat.html", username=username, 
             chat_messages=messages)
-
-
-@app.route('/<username>/<message>')
-def send_message(username, message):
-    """Create a new message and redirect to the chat page"""
-    add_message(username, message)
-    return redirect("/" + username)
-
 
 app.run(host=os.getenv('IP'), port=int(os.getenv('PORT')), debug=True)
