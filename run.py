@@ -14,7 +14,6 @@ def add_message(username, message):
     messages.append("timestamp": now, "from": username, "message": message)
 
 
-
 @app.route('/', methods=["GET", "POST"])
 def index():
     """Main page with intructions"""
